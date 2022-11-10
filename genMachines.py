@@ -16,5 +16,11 @@ res = conn.getresponse()
 data = res.read()
 # print(data.decode("utf-8"))
 machines = json.loads(data.decode("utf-8"))
+template = open("/etc/hosts.template", "r").read()
+output = open("/etc/hosts", "w")
+newHosts = "\n#Hack the Box:"
 for i in machines['info']:
-    print(f'{i["ip"]}\t{i["name"].lower()}.htb')
+    newHosts = (f'{newHosts}\n{i["ip"]}\t{i["name"].lower()}.htb')
+# print(newHosts)
+hosts = template.replace("{HTB}", newHosts)
+output.write(hosts)
